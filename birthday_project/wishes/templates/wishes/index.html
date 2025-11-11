@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Happy Birthday Nayana 🎂</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Happy Birthday Nayana 🎉</h1>
+        <p class="msg">
+            A story of a beautiful friendship, dedicated to a wonderful sister and an even more amazing person. 💖
+        </p>
+
+        <button onclick="togglePlay()" class="music-btn">
+            ▶️ Play Our Soundtrack
+        </button>
+    </div>
+
+    <div class="storybook">
+        <!-- Chapter 1: The Beginning -->
+        <div class="chapter" id="chapter1">
+            <div class="chapter-content">
+                <h2>Chapter 1: The Beginning</h2>
+                <p>Our story started long ago... Remember when we were just kids with big dreams? This is where it all began.</p>
+                <img src="{% static 'images/photo1.jpg' %}" alt="Childhood Memory">
+                <p class="caption">The good old days. We haven't changed a bit!</p>
+            </div>
+        </div>
+
+        <!-- Chapter 2: My Favourite Song of Yours -->
+        <div class="chapter" id="chapter2">
+            <div class="chapter-content">
+                <h2>Chapter 2: My Favourite Song of Yours</h2>
+                <p>Out of all the beautiful songs you've sung, this one holds a special place in my heart. It always reminds me of your incredible talent.</p>
+                <video controls>
+                    <source src="{% static 'videos/favourite_song.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p class="caption">Just one of the many reasons you're amazing. 🎶</p>
+            </div>
+        </div>
+
+        <!-- Chapter 3: Our Adventures -->
+        <div class="chapter" id="chapter3">
+            <div class="chapter-content">
+                <h2>Chapter 3: Our Adventures</h2>
+                <p>From silly moments to grand adventures, we've shared so much laughter and created memories that I'll cherish forever.</p>
+                <div class="image-gallery-container">
+                    <div class="swipe-arrow left" id="prev-image">‹</div>
+                    <img id="adventure-image" 
+                         src="{% static 'images/photo3.jpg' %}" 
+                         data-images="{% static 'images/photo3.jpg' %},{% static 'images/photo3_alt.jpg' %},{% static 'images/photo3_another.jpg' %},{% static 'images/photo3_new.jpg' %},{% static 'images/photo3_final.jpg' %}"
+                         data-current-index="0"
+                         alt="Adventure Memory" 
+                         title="Click or swipe to see more memories!">
+                    <div class="swipe-arrow right" id="next-image">›</div>
+                </div>
+                <p class="caption">Here's to many more adventures together!</p>
+            </div>
+        </div>
+
+        <!-- Chapter 4: A Surprise for You -->
+        <div class="chapter" id="chapter4">
+            <div class="chapter-content">
+                <h2>Chapter 4: A Surprise for You</h2>
+                <p>Something special is waiting for you. Click the gift to open it!</p>
+                <div class="gift-box" id="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-body"></div>
+                    <div class="hidden-message" id="hidden-message">
+                        <p>You are the brightest star in my sky. Your friendship is a gift I cherish every day. Happy Birthday!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Chapter: A Note From Me -->
+        <div class="chapter" id="chapter-final">
+            <div class="chapter-content">
+                <h2>A Special Note For You</h2>
+                <div class="reasons">
+                    <h3>✨ Why I Admire You ✨</h3>
+                    <ul>
+                     <li>Your incredible voice — you sing like an angel. 🎤😇</li>
+<li>I admire how you speak your mind — no filters, just facts. 💅</li>
+<li>You bring energy and joy wherever you go. ⚡😊</li>
+<li>Your creativity and passion inspire me every day. 🎨🔥</li>
+<li>You’re not just a friend — you’re family. ❤️</li>
+
+                    </ul>
+                </div>
+                <p class="final-msg">Happy Birthday, Nayana. Thank you for being the amazing person you are. Wishing you all the best for your beautiful journey ahead!</p>
+                <p class="footer">Made with ❤️ by Yashu</p>
+            </div>
+        </div>
+    </div>
+
+    <audio id="birthday-song" loop>
+        <source src="{% static 'images/song.mp3' %}" type="audio/mpeg">
+    </audio>
+    <div class="hearts"></div>
+
+    <script>
+        function togglePlay() {
+            const song = document.getElementById('birthday-song');
+            const playButton = document.querySelector('.music-btn');
+            // This function is called by the button
+            if (!song.paused) {
+                song.pause();
+                playButton.innerHTML = '▶️ Play Our Soundtrack';
+            } else {
+                song.play();
+                playButton.innerHTML = '⏸️ Pause';
+            }
+        }
+
+        document.getElementById('gift-box').addEventListener('click', function() {
+            this.classList.toggle('open');
+        });
+
+        // Swap image in Chapter 3 on click
+        const adventureImage = document.getElementById('adventure-image');
+        if (adventureImage) {
+            adventureImage.style.cursor = 'pointer'; // Make it obvious it's interactive
+            const images = adventureImage.getAttribute('data-images').split(',');
+            let touchStartX = 0;
+
+            const showNextImage = () => {
+                let currentIndex = parseInt(adventureImage.getAttribute('data-current-index'), 10);
+                currentIndex = (currentIndex + 1) % images.length; // Move to next, loop to start
+                adventureImage.src = images[currentIndex];
+                adventureImage.setAttribute('data-current-index', currentIndex);
+            };
+
+            const showPrevImage = () => {
+                let currentIndex = parseInt(adventureImage.getAttribute('data-current-index'), 10);
+                currentIndex = (currentIndex - 1 + images.length) % images.length; // Move to previous, loop to end
+                adventureImage.src = images[currentIndex];
+                adventureImage.setAttribute('data-current-index', currentIndex);
+            };
+
+            // Click to go to the next image (for desktop)
+            adventureImage.addEventListener('click', showNextImage);
+
+            // Make arrows clickable
+            document.getElementById('prev-image').addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent image click from firing
+                showPrevImage();
+            });
+
+            document.getElementById('next-image').addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent image click from firing
+                showNextImage();
+            });
+
+
+            // --- Swipe functionality for touch devices ---
+            adventureImage.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            adventureImage.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].screenX;
+                const swipeDistance = touchEndX - touchStartX;
+
+                // Check if it was a significant swipe
+                if (Math.abs(swipeDistance) > 50) { 
+                    if (swipeDistance < 0) {
+                        // Swiped Left -> Next Image
+                        showNextImage();
+                    } else {
+                        // Swiped Right -> Previous Image
+                        showPrevImage();
+                    }
+                }
+            });
+
+            // Prevent the click event from firing after a swipe
+            adventureImage.addEventListener('touchmove', (e) => {
+                // If the user is scrolling, don't treat it as a click
+                e.preventDefault();
+            }, { passive: false });
+        }
+
+        // Create a pop-up heart on tap
+        document.body.addEventListener('click', function(event) {
+            // We don't want hearts when clicking on buttons
+            if (event.target.tagName === 'BUTTON') return;
+
+            const heart = document.createElement('div');
+            heart.className = 'popup-heart';
+            heart.innerHTML = '❤️';
+            document.body.appendChild(heart);
+
+            heart.style.left = `${event.clientX - 15}px`;
+            heart.style.top = `${event.clientY - 15}px`;
+
+            // Remove the heart from the DOM after the animation finishes
+            setTimeout(() => {
+                heart.remove();
+            }, 1000); // 1000ms = 1s, matches animation duration
+        });
+    </script>
+</body>
+</html>
